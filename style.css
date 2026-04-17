@@ -584,13 +584,15 @@ a:hover {
   inset: calc(var(--top-bar-height) + var(--site-header-sticky-h)) 0 auto 0;
   z-index: var(--z-nav-drawer);
   background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  /* Collapsed drawer uses max-height:0 — a real border still paints as a fixed hairline over scrolled content */
+  border-bottom: none;
   max-height: 0;
   overflow: hidden;
   transition: max-height var(--transition-med);
 }
 
 .site-nav.is-open {
+  border-bottom: 1px solid var(--color-border);
   max-height: min(calc(100vh - var(--top-bar-height) - var(--site-header-sticky-h) - 12px), min(560px, 70dvh));
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -1060,7 +1062,7 @@ a:hover {
 }
 
 .mid-cta--compact .mid-cta__inner {
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .mid-cta__label {
@@ -1076,10 +1078,6 @@ a:hover {
     width: auto;
     text-align: left;
     margin-right: var(--space-md);
-  }
-
-  .mid-cta--compact .mid-cta__inner {
-    justify-content: center;
   }
 }
 
@@ -1881,23 +1879,56 @@ a:hover {
 /* ----- Contact ----- */
 .contact-grid {
   display: grid;
-  gap: clamp(2rem, 5vw, 3.5rem);
+  gap: clamp(1.75rem, 4vw, 2.75rem);
 }
 
 .contact-grid > * {
   min-width: 0;
 }
 
+@media (min-width: 768px) {
+  .contact-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
 @media (min-width: 1024px) {
   .contact-grid {
-    grid-template-columns: 0.9fr 1.1fr;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(2rem, 4vw, 3rem);
   }
+}
+
+.contact-map-wide {
+  grid-column: 1 / -1;
+  min-height: clamp(200px, 28vw, 320px);
+}
+
+.contact-grid .contact-map-wide.map-placeholder {
+  margin-top: 0;
 }
 
 .contact-card {
   padding: clamp(1.25rem, 4vw + 0.75rem, var(--space-2xl));
   border-radius: var(--radius-lg);
   align-self: start;
+}
+
+.contact-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  margin: 0 0 var(--space-md);
+  color: var(--color-text);
+}
+
+@supports (text-wrap: balance) {
+  .contact-card__title {
+    text-wrap: balance;
+  }
 }
 
 @media (min-width: 768px) {
